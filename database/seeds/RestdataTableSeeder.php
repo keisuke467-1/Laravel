@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use App\Restdata;
-use Illuminate\Foundation\Console\Presets\React;
 
 class RestdataTableSeeder extends Seeder
 {
@@ -11,6 +10,12 @@ class RestdataTableSeeder extends Seeder
         $param = [
             'message' => 'Google Japan',
             'url' => 'https://www.google.co.jp',
+        ];
+        $restdata = new Restdata;
+        $restdata->fill($param)->save();
+        $param = [
+            'message' => 'Yahoo Japan',
+            'url' => 'https://www.yahoo.co.jp',
         ];
         $restdata = new Restdata;
         $restdata->fill($param)->save();
