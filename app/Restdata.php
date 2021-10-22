@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Restdata extends Model
 {
     //関連しているデータベースのテーブルを指定
-    protected $tabel = 'restdata';
+    protected $table = 'restdata';
     protected $guarded = array('id');
 
     public static $rules = array (
