@@ -10,7 +10,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Requests\HelloRequest;
-
+use Illuminate\Foundation\Console\Presets\React;
 use Illuminate\Support\Facades\DB;
 
 // ○最後の文：
@@ -237,5 +237,18 @@ class HelloController extends Controller
             $id = $request -> id;
             $items = DB::table('people') -> where('id','<=', $id) -> get();
             return view('hello.show', ['items' => $items]);
+        }
+
+        public function ses_get(Request $request)
+        {
+            $sesdata = $request->session()->get('msg');
+            return view('hello.session',['session_data' => $sesdata]);
+        }
+
+        public function ses_put(Request $request)
+        {
+            $msg = $request->input;
+            $request->session()->put('msg',$msg);
+            return redirect('hello/session');
         }
 }

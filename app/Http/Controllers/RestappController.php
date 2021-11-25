@@ -15,6 +15,7 @@ class RestappController extends Controller
     public function index()
     {
         $items = Restdata::all();
+        // toArray()で配列に変換
         return $items->toArray();
     }
 
