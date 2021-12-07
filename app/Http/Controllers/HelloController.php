@@ -12,6 +12,7 @@ use Illuminate\Http\Response;
 use App\Http\Requests\HelloRequest;
 use Illuminate\Foundation\Console\Presets\React;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Person;
 
 // ○最後の文：
@@ -184,13 +185,43 @@ class HelloController extends Controller
             
         //     return view('hello.index',['data'=>$request->data]);
         // }
-
         public function index(Request $request)
         {
-            $sort = $request->sort;
-            $items = Person::orderBy($sort,'asc')->Paginate(5);
-            $param = ['items' => $items, 'sort' => $sort];
-            return view('hello.index',$param);
+            if(isset($request->sort)){
+                $user = Auth::user();
+                $sort = $request->sort;
+                $items = Person::orderBy($sort, 'asc')->simplePaginate(3);
+                $param = [
+                    'items' => $items,
+                    'sort' => $sort,
+                    'user' => $user
+                ];
+                return view('hello.index', $param);
+            }else{
+                $user = Auth::user();
+                $items = Person::orderBy('age', 'asc')->simplePaginate(3);
+                $param = [
+                    'items' => $items,
+                    'user' => $user
+                ];
+                return view('hello.index', $param);
+            }
+        }
+
+        public function getAuth(Request $request){
+            $param = ['message' => 'ログインしてください。'];
+            return view('hello.auth',$param);
+        }
+
+        public function postAuth(Request $request){
+            $email = $request->email;
+            $password = $request->password;
+            if (Auth::attempt(['email' => $email,'password' => $password])) {
+                $msg = 'ログインしました。(' . Auth::user()->name . ')';
+            }else{
+                $msg = 'ログインに失敗しました。';
+            }
+            return view('hello.auth',['message' => $msg]);
         }
 
         public function post(Request $request)

@@ -16,6 +16,11 @@
 @endsection
 
 @section('content')
+    @if (Auth::check())
+    <p>USER: {{$user->name . '(' . $user->email . ')'}}</p>
+    @else
+    <p>※ログインしていません。(<a href="/login">ログイン</a>|<a href="/register">登録)</a></p>
+    @endif
     <table>
         <tr>
             <th>
@@ -36,5 +41,10 @@
             </tr>
         @endforeach
     </table>
-    {{ $items->appends(['sort' => $sort])->links() }}
-@endsection
+    @if (isset($sort))
+    {{$items->appends(['sort' => $sort])->links()}}
+        
+    @else
+    {{$items->links()}}
+    @endif
+    @endsection
